@@ -1,0 +1,10 @@
+version: "3"
+services: 
+  dev-db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=papelaria
+    ports:
+      - "5432:5432"
