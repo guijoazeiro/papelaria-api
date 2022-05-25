@@ -11,7 +11,6 @@ export class AuthService {
   async signUp(dto: AuthDTO) {
     const { password } = dto;
     const hashedPassword = await this.hashPassword(password);
-    console.log(hashedPassword);
 
     try {
       const user = await this.prisma.user.create({
@@ -27,8 +26,27 @@ export class AuthService {
         if (error.code === 'P2002') {
           throw new ForbiddenException('Credentials taken');
         }
-      }      
+      }
     }
+  }
+
+  async signIn(dto: AuthDTO) {
+    const { email, password } = dto;
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user) {
+      throw new ForbiddenException('Credentials not found');
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      throw new ForbiddenException('Credentials not found');
+    }
+
+    delete user.password;
+    return user;
   }
 
   private async hashPassword(password: string) {
