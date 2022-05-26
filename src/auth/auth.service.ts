@@ -77,17 +77,26 @@ export class AuthService {
     return bcrypt.hash(password, salt);
   }
 
-  signToken(userId: string, email: string) {
+  async signToken(
+    userId: string,
+    email: string,
+  ): Promise<{ access_token: string }> {
     const payload = {
       sub: userId,
       email,
     };
-
     const secret = this.config.get('JWT_SECRET');
 
-    return this.jwt.signAsync(payload, {
-      expiresIn: '1d',
-      secret: secret,
-    });
+    const token = await this.jwt.signAsync(
+      payload,
+      {
+        expiresIn: '15m',
+        secret: secret,
+      },
+    );
+
+    return {
+      access_token: token,
+    };
   }
 }
