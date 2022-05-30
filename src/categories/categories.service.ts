@@ -18,4 +18,12 @@ export class CategoriesService {
       throw new Error(error);
     }
   }
+
+  async getCategories() {
+    try {
+      return await this.prisma.category.findMany();
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
