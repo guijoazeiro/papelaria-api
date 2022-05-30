@@ -14,7 +14,6 @@ export class UsersService {
     updateUser: UpdateUserDTO,
   ) {
     try {
-      console.log(updateUser);
       const user = await this.prisma.user.update({
         where: { id },
         data: {
