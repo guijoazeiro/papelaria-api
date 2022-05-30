@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { PrismaService } from 'src/database/prisma.service';
 import { CategoryDto } from './dto';
 
@@ -15,7 +16,16 @@ export class CategoriesService {
         },
       });
     } catch (error) {
-      throw new Error(error);
+      if (
+        error instanceof
+        PrismaClientKnownRequestError
+      ) {
+        if (error.code === 'P2002') {
+          throw new ForbiddenException(
+            'Abbreviation taken',
+          );
+        }
+      }
     }
   }
 
