@@ -39,4 +39,18 @@ export class SuppliersService {
       throw new Error(error);
     }
   }
+
+  async getSupplier(cnpj: string) {
+    try {
+      return await this.prisma.supplier.findUnique(
+        {
+          where: {
+            cnpj: cnpj,
+          },
+        },
+      );
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }

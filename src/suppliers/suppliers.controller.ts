@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
 } from '@nestjs/common';
 import { SupplierDTO } from './dto';
@@ -25,5 +26,12 @@ export class SuppliersController {
   @Get()
   async getSuppliers() {
     return await this.suppliersService.getSuppliers();
+  }
+
+  @Get('/:cnpj')
+  async getSupplier(@Param('cnpj') cnpj: string) {
+    return await this.suppliersService.getSupplier(
+      cnpj,
+    );
   }
 }
