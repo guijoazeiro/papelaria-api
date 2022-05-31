@@ -35,4 +35,6 @@ model Supplier {
   name      String
   cnpj      String   @unique
   createdAt DateTime @default(now())
+
+  @@map("suppliers")
 }
