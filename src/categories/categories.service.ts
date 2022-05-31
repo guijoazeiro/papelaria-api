@@ -1,4 +1,7 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { PrismaService } from 'src/database/prisma.service';
 import { CategoryDto } from './dto';
@@ -32,6 +35,20 @@ export class CategoriesService {
   async getCategories() {
     try {
       return await this.prisma.category.findMany();
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getCategory(id: string) {
+    try {
+      return await this.prisma.category.findUnique(
+        {
+          where: {
+            id: id,
+          },
+        },
+      );
     } catch (error) {
       throw new Error(error);
     }
