@@ -25,10 +25,18 @@ export class SuppliersService {
       ) {
         if (error.code === 'P2002') {
           throw new ForbiddenException(
-            'Abbreviation taken',
+            'CNPJ taken',
           );
         }
       }
+    }
+  }
+
+  async getSuppliers() {
+    try {
+      return await this.prisma.supplier.findMany();
+    } catch (error) {
+      throw new Error(error);
     }
   }
 }
