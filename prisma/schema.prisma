@@ -11,21 +11,28 @@ datasource db {
 }
 
 model User {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
   firstname String?
-  lastname String?
-  email String @unique
-  password String
+  lastname  String?
+  email     String   @unique
+  password  String
   creadetAt DateTime @default(now())
 
   @@map("users")
 }
 
 model Category {
-  id String @id @default(uuid())
-  name String
-  abbreviation String @unique
-  createdAt DateTime @default(now())
+  id           String   @id @default(uuid())
+  name         String
+  abbreviation String   @unique
+  createdAt    DateTime @default(now())
 
   @@map("categories")
+}
+
+model Supplier {
+  id        String   @id @default(uuid())
+  name      String
+  cnpj      String   @unique
+  createdAt DateTime @default(now())
 }
