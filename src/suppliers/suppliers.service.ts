@@ -72,4 +72,16 @@ export class SuppliersService {
       throw new Error(error);
     }
   }
+
+  async deleteSupplier(cnpj: string) {
+    try {
+      return await this.prisma.supplier.delete({
+        where: {
+          cnpj: cnpj,
+        },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }

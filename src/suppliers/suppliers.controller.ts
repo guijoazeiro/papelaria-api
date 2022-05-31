@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -37,10 +38,22 @@ export class SuppliersController {
   }
 
   @Put('/:cnpj')
-  async updateSupplier(@Param('cnpj') cnpj: string, @Body() supplierDTO: SupplierDTO) {
+  async updateSupplier(
+    @Param('cnpj') cnpj: string,
+    @Body() supplierDTO: SupplierDTO,
+  ) {
     return await this.suppliersService.updateSupplier(
       cnpj,
       supplierDTO,
+    );
+  }
+
+  @Delete('/:cnpj')
+  async deleteSupplier(
+    @Param('cnpj') cnpj: string,
+  ) {
+    return await this.suppliersService.deleteSupplier(
+      cnpj,
     );
   }
 }
