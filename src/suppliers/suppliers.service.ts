@@ -53,4 +53,23 @@ export class SuppliersService {
       throw new Error(error);
     }
   }
+
+  async updateSupplier(
+    cnpj: string,
+    supplierDto: SupplierDTO,
+  ) {
+    try {
+      return await this.prisma.supplier.update({
+        where: {
+          cnpj: cnpj,
+        },
+        data: {
+          name: supplierDto.name,
+          cnpj: supplierDto.cnpj,
+        },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }

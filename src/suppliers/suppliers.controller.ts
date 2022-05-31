@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
 } from '@nestjs/common';
 import { SupplierDTO } from './dto';
 import { SuppliersService } from './suppliers.service';
@@ -32,6 +33,14 @@ export class SuppliersController {
   async getSupplier(@Param('cnpj') cnpj: string) {
     return await this.suppliersService.getSupplier(
       cnpj,
+    );
+  }
+
+  @Put('/:cnpj')
+  async updateSupplier(@Param('cnpj') cnpj: string, @Body() supplierDTO: SupplierDTO) {
+    return await this.suppliersService.updateSupplier(
+      cnpj,
+      supplierDTO,
     );
   }
 }
