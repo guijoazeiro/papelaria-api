@@ -73,7 +73,11 @@ export class CategoriesService {
         error instanceof
         PrismaClientKnownRequestError
       ) {
-        console.log(error.code);
+        if (error.code === 'P2002') {
+          throw new ForbiddenException(
+            'Abbreviation taken',
+          );
+        }
       }
     }
   }
