@@ -24,4 +24,4 @@ $ npm run start:prod
 ```
 
 ## License
-[MIT licensed](LICENSE).
+MIT licensed.
