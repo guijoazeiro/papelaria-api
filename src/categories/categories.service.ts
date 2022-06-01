@@ -53,4 +53,23 @@ export class CategoriesService {
       throw new Error(error);
     }
   }
+
+  async updateCategory(
+    id: string,
+    categoryDTO: CategoryDto,
+  ) {
+    try {
+      return await this.prisma.category.update({
+        where: {
+          id: id,
+        },
+        data: {
+          name: categoryDTO.name,
+          abbreviation: categoryDTO.abbreviation,
+        },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
