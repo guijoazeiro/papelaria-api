@@ -69,7 +69,12 @@ export class CategoriesService {
         },
       });
     } catch (error) {
-      throw new Error(error);
+      if (
+        error instanceof
+        PrismaClientKnownRequestError
+      ) {
+        console.log(error.code);
+      }
     }
   }
 }
