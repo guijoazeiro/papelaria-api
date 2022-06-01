@@ -1,8 +1,4 @@
-import {
-  ForbiddenException,
-  Injectable,
-} from '@nestjs/common';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { CategoryDto } from './dto';
 
@@ -11,25 +7,12 @@ export class CategoriesService {
   constructor(private prisma: PrismaService) {}
 
   async createCategory(categoryDto: CategoryDto) {
-    try {
-      return await this.prisma.category.create({
-        data: {
-          name: categoryDto.name,
-          abbreviation: categoryDto.abbreviation,
-        },
-      });
-    } catch (error) {
-      if (
-        error instanceof
-        PrismaClientKnownRequestError
-      ) {
-        if (error.code === 'P2002') {
-          throw new ForbiddenException(
-            'Abbreviation taken',
-          );
-        }
-      }
-    }
+    return await this.prisma.category.create({
+      data: {
+        name: categoryDto.name,
+        abbreviation: categoryDto.abbreviation,
+      },
+    });
   }
 
   async getCategories() {
@@ -58,27 +41,14 @@ export class CategoriesService {
     id: string,
     categoryDTO: CategoryDto,
   ) {
-    try {
-      return await this.prisma.category.update({
-        where: {
-          id: id,
-        },
-        data: {
-          name: categoryDTO.name,
-          abbreviation: categoryDTO.abbreviation,
-        },
-      });
-    } catch (error) {
-      if (
-        error instanceof
-        PrismaClientKnownRequestError
-      ) {
-        if (error.code === 'P2002') {
-          throw new ForbiddenException(
-            'Abbreviation taken',
-          );
-        }
-      }
-    }
+    return await this.prisma.category.update({
+      where: {
+        id: id,
+      },
+      data: {
+        name: categoryDTO.name,
+        abbreviation: categoryDTO.abbreviation,
+      },
+    });
   }
 }

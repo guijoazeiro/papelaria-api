@@ -2,7 +2,6 @@ import {
   ForbiddenException,
   Injectable,
 } from '@nestjs/common';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { PrismaService } from 'src/database/prisma.service';
 import { AuthDTO } from './dto';
 import * as bcrypt from 'bcrypt';
@@ -22,27 +21,14 @@ export class AuthService {
     const hashedPassword =
       await this.hashPassword(password);
 
-    try {
-      const user = await this.prisma.user.create({
-        data: {
-          email: dto.email,
-          password: hashedPassword,
-        },
-      });
+    const user = await this.prisma.user.create({
+      data: {
+        email: dto.email,
+        password: hashedPassword,
+      },
+    });
 
-      return this.signToken(user.id, user.email);
-    } catch (error) {
-      if (
-        error instanceof
-        PrismaClientKnownRequestError
-      ) {
-        if (error.code === 'P2002') {
-          throw new ForbiddenException(
-            'Credentials taken',
-          );
-        }
-      }
-    }
+    return this.signToken(user.id, user.email);
   }
 
   async signIn(dto: AuthDTO) {
