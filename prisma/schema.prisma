@@ -27,6 +27,7 @@ model Category {
   abbreviation String   @unique
   createdAt    DateTime @default(now())
 
+  Product Product[]
   @@map("categories")
 }
 
@@ -37,4 +38,21 @@ model Supplier {
   createdAt DateTime @default(now())
 
   @@map("suppliers")
+  Product Product[]
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  price       Float
+  image       String?
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  supplierId  String
+  supplier    Supplier @relation(fields: [supplierId], references: [id])
+  createdAt   DateTime @default(now())
+
+  @@map("products")
+
 }
