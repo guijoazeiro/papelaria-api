@@ -37,15 +37,17 @@ model Supplier {
   cnpj      String   @unique
   createdAt DateTime @default(now())
 
-  @@map("suppliers")
   Product Product[]
+  @@map("suppliers")
 }
 
 model Product {
   id          String   @id @default(uuid())
-  name        String
-  description String
-  price       Float
+  name        String @unique
+  description String  
+  url         String @unique
+  price       Decimal
+  stock       Int
   image       String?
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id])
@@ -53,6 +55,6 @@ model Product {
   supplier    Supplier @relation(fields: [supplierId], references: [id])
   createdAt   DateTime @default(now())
 
-  @@map("products")
 
+  @@map("products")
 }
