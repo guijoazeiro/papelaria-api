@@ -50,4 +50,51 @@ export class ProductService {
       },
     });
   }
+
+  async getProducts() {
+    try {
+      return await this.prisma.product.findMany({
+        include: {
+          category: {
+            select: {
+              name: true,
+            },
+          },
+          supplier: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      });
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async getProductByURL(url: string) {
+    try {
+      return await this.prisma.product.findUnique(
+        {
+          where: {
+            url,
+          },
+          include: {
+            category: {
+              select: {
+                name: true,
+              },
+            },
+            supplier: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      );
+    } catch (error) {
+      return error;
+    }
+  }
 }

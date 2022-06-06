@@ -1,12 +1,14 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Post,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { url } from 'inspector';
 import { createProductDTO } from './dto';
 import { saveImageToStorage } from './helpers/image-store';
 import { ProductService } from './product.service';
@@ -30,6 +32,24 @@ export class ProductController {
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.productService.uploadImage(id, file.path);
+    return this.productService.uploadImage(
+      id,
+      file.path,
+    );
+  }
+
+  @Get()
+  async getProducts() {
+    return this.productService.getProducts();
+  }
+
+  @Get('/:url')
+  async getProductByURL(@Param('url') url: string) {
+    return this.productService.getProductByURL(url);
+  }
+
+  @Get('/category/:category')
+  async getProductsByCategory(@Param('category') category: string) {
+    return this.productService.getProductsByCategory(category);
   }
 }
