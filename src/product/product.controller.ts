@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Param,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -17,13 +18,18 @@ export class ProductController {
   ) {}
 
   @Post()
+  async create(@Body() dto: createProductDTO) {
+    return this.productService.create(dto);
+  }
+
+  @Post('upload/:id')
   @UseInterceptors(
     FileInterceptor('file', saveImageToStorage),
   )
-  async create(
+  async uploadImage(
+    @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
-    @Body() dto: createProductDTO,
-  ) {    
-    return this.productService.create(dto);
+  ) {
+    return this.productService.uploadImage(id, file.path);
   }
 }

@@ -13,7 +13,7 @@ export class ProductService {
         url: dto.url,
         price: dto.price,
         stock: dto.stock,
-        description: dto.description,       
+        description: dto.description,
         category: {
           connect: {
             id: dto.category,
@@ -36,6 +36,17 @@ export class ProductService {
             name: true,
           },
         },
+      },
+    });
+  }
+
+  async uploadImage(id: string, file: string) {
+    return this.prisma.product.update({
+      where: {
+        id,
+      },
+      data: {
+        image: file,
       },
     });
   }
