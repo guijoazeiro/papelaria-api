@@ -1,16 +1,41 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
-import { ProductDTO } from './dto';
+import { createProductDTO } from './dto';
 
 @Injectable()
 export class ProductService {
   constructor(private prisma: PrismaService) {}
 
-  async create(dto: ProductDTO, path: string) {
+  async create(dto: createProductDTO) {
     return this.prisma.product.create({
       data: {
-        ...dto,
-        image: path,
+        name: dto.name,
+        url: dto.url,
+        price: dto.price,
+        stock: dto.stock,
+        description: dto.description,       
+        category: {
+          connect: {
+            id: dto.category,
+          },
+        },
+        supplier: {
+          connect: {
+            id: dto.supplier,
+          },
+        },
+      },
+      include: {
+        category: {
+          select: {
+            name: true,
+          },
+        },
+        supplier: {
+          select: {
+            name: true,
+          },
+        },
       },
     });
   }

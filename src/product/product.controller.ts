@@ -6,7 +6,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ProductDTO } from './dto';
+import { createProductDTO } from './dto';
 import { saveImageToStorage } from './helpers/image-store';
 import { ProductService } from './product.service';
 
@@ -22,9 +22,8 @@ export class ProductController {
   )
   async create(
     @UploadedFile() file: Express.Multer.File,
-    @Body() dto: ProductDTO,
-  ) {
-    const { path } = file;    
-    return this.productService.create(dto, path);
+    @Body() dto: createProductDTO,
+  ) {    
+    return this.productService.create(dto);
   }
 }

@@ -1,1 +1,1 @@
-export * from './product.dto';
+export * from './createProduct.dto';
