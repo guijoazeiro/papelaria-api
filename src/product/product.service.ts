@@ -123,4 +123,30 @@ export class ProductService {
       return error;
     }
   }
+
+  async getProductsBySupplier(supplier: string) {
+    try {
+      return await this.prisma.product.findMany({
+        where: {
+          supplier: {
+            id: supplier,
+          },
+        },
+        include: {
+          category: {
+            select: {
+              name: true,
+            },
+          },
+          supplier: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      });
+    } catch (error) {
+      return error;
+    }
+  }
 }

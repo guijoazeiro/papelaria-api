@@ -60,4 +60,13 @@ export class ProductController {
       category,
     );
   }
+
+  @Get('/supplier/:supplier')
+  async getProductsBySupplier(
+    @Param('supplier') supplier: string,
+  ) {
+    return this.productService.getProductsBySupplier(
+      supplier,
+    );
+  }
 }
