@@ -44,12 +44,20 @@ export class ProductController {
   }
 
   @Get('/:url')
-  async getProductByURL(@Param('url') url: string) {
-    return this.productService.getProductByURL(url);
+  async getProductByURL(
+    @Param('url') url: string,
+  ) {
+    return this.productService.getProductByURL(
+      url,
+    );
   }
 
   @Get('/category/:category')
-  async getProductsByCategory(@Param('category') category: string) {
-    return this.productService.getProductsByCategory(category);
+  async getProductsByCategory(
+    @Param('category') category: string,
+  ) {
+    return this.productService.getProductsByCategory(
+      category,
+    );
   }
 }

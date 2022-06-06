@@ -97,4 +97,30 @@ export class ProductService {
       return error;
     }
   }
+
+  async getProductsByCategory(category: string) {
+    try {
+      return await this.prisma.product.findMany({
+        where: {
+          category: {
+            id: category,
+          },
+        },
+        include: {
+          category: {
+            select: {
+              name: true,
+            },
+          },
+          supplier: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      });
+    } catch (error) {
+      return error;
+    }
+  }
 }
