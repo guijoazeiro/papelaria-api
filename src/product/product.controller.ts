@@ -69,4 +69,13 @@ export class ProductController {
       supplier,
     );
   }
+
+  @Get('/search/:search')
+  async getProductsBySearch(
+    @Param('search') search: string,
+  ) {
+    return this.productService.getProductsBySearch(
+      search,
+    );
+  }
 }

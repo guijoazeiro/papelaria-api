@@ -149,4 +149,39 @@ export class ProductService {
       return error;
     }
   }
+
+  async getProductsBySearch(search: string) {
+    try {
+      return await this.prisma.product.findMany({
+        where: {
+          OR: [
+            {
+              name: {
+                contains: search,
+              },
+            },
+            {
+              description: {
+                contains: search,
+              },
+            },
+          ],
+        },
+        include: {
+          category: {
+            select: {
+              name: true,
+            },
+          },
+          supplier: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      });
+    } catch (error) {
+      return error;
+    }
+  }
 }
