@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -10,7 +11,10 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { url } from 'inspector';
-import { createProductDTO, updateProductDTO } from './dto';
+import {
+  createProductDTO,
+  updateProductDTO,
+} from './dto';
 import { saveImageToStorage } from './helpers/image-store';
 import { ProductService } from './product.service';
 
@@ -89,5 +93,10 @@ export class ProductController {
       id,
       dto,
     );
+  }
+
+  @Delete('/:id')
+  async deleteProduct(@Param('id') id: string) {
+    return this.productService.deleteProduct(id);
   }
 }

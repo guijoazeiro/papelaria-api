@@ -225,4 +225,12 @@ export class ProductService {
       },
     });
   }
+
+  async deleteProduct(id: string) {
+    return this.prisma.product.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }
