@@ -16,6 +16,7 @@ model User {
   lastname  String?
   email     String   @unique
   password  String
+  role      Role     @default(USER)
   creadetAt DateTime @default(now())
 
   @@map("users")
@@ -43,9 +44,9 @@ model Supplier {
 
 model Product {
   id          String   @id @default(uuid())
-  name        String @unique
-  description String  
-  url         String @unique
+  name        String   @unique
+  description String
+  url         String   @unique
   price       Decimal
   stock       Int
   image       String?
@@ -57,4 +58,9 @@ model Product {
 
 
   @@map("products")
+}
+
+enum Role {
+  ADMIN
+  USER
 }
