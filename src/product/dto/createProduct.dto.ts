@@ -11,11 +11,9 @@ export class createProductDTO {
   @IsNotEmpty()
   name: string;
 
-
   @IsString()
   @IsNotEmpty()
-  url: string
-
+  url: string;
 
   @IsNotEmpty()
   @IsNumber()

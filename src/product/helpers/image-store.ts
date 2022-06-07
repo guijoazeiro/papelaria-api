@@ -3,13 +3,16 @@ import { v4 as uuidv4 } from 'uuid';
 
 import path = require('path');
 
-type validMimeType = 'image/png' | 'image/jpg' | 'image/jpeg';
+type validMimeType =
+  | 'image/png'
+  | 'image/jpg'
+  | 'image/jpeg';
 
 const validMimeTypes: validMimeType[] = [
-    'image/png',
-    'image/jpg',
-    'image/jpeg',
-  ];
+  'image/png',
+  'image/jpg',
+  'image/jpeg',
+];
 
 export const saveImageToStorage = {
   storage: diskStorage({
