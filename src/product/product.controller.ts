@@ -4,12 +4,13 @@ import {
   Get,
   Param,
   Post,
+  Put,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { url } from 'inspector';
-import { createProductDTO } from './dto';
+import { createProductDTO, updateProductDTO } from './dto';
 import { saveImageToStorage } from './helpers/image-store';
 import { ProductService } from './product.service';
 
@@ -76,6 +77,17 @@ export class ProductController {
   ) {
     return this.productService.getProductsBySearch(
       search,
+    );
+  }
+
+  @Put('/:id')
+  async updateProduct(
+    @Param('id') id: string,
+    @Body() dto: updateProductDTO,
+  ) {
+    return this.productService.updateProduct(
+      id,
+      dto,
     );
   }
 }
