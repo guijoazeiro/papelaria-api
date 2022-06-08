@@ -5,7 +5,10 @@ import {
   Param,
   Post,
   Put,
+  UseGuards
 } from '@nestjs/common';
+import { JwtGuard } from 'src/auth/guard';
+import { RolesGuard } from 'src/auth/guard/role.guard';
 import { CategoriesService } from './categories.service';
 import { CategoryDto } from './dto';
 
@@ -15,6 +18,7 @@ export class CategoriesController {
     private readonly categoriesService: CategoriesService,
   ) {}
 
+  @UseGuards(JwtGuard, RolesGuard)
   @Post()
   async createCategory(
     @Body() categoryDTO: CategoryDto,
@@ -36,6 +40,7 @@ export class CategoriesController {
     );
   }
 
+  @UseGuards(JwtGuard, RolesGuard)
   @Put('/:id')
   async updateCategory(
     @Param('id') id: string,

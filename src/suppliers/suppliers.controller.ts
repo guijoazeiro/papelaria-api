@@ -6,7 +6,10 @@ import {
   Param,
   Post,
   Put,
+  UseGuards
 } from '@nestjs/common';
+import { JwtGuard } from 'src/auth/guard';
+import { RolesGuard } from 'src/auth/guard/role.guard';
 import { SupplierDTO } from './dto';
 import { SuppliersService } from './suppliers.service';
 
@@ -16,6 +19,7 @@ export class SuppliersController {
     private readonly suppliersService: SuppliersService,
   ) {}
 
+  @UseGuards(JwtGuard, RolesGuard)
   @Post()
   async crateSupplier(
     @Body() supplierDTO: SupplierDTO,
@@ -37,6 +41,7 @@ export class SuppliersController {
     );
   }
 
+  @UseGuards(JwtGuard, RolesGuard)
   @Put('/:cnpj')
   async updateSupplier(
     @Param('cnpj') cnpj: string,
@@ -48,6 +53,7 @@ export class SuppliersController {
     );
   }
 
+  @UseGuards(JwtGuard, RolesGuard)
   @Delete('/:cnpj')
   async deleteSupplier(
     @Param('cnpj') cnpj: string,

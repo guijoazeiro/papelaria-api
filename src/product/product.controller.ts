@@ -7,13 +7,15 @@ import {
   Post,
   Put,
   UploadedFile,
-  UseInterceptors,
+  UseGuards,
+  UseInterceptors
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { url } from 'inspector';
+import { JwtGuard } from 'src/auth/guard';
+import { RolesGuard } from 'src/auth/guard/role.guard';
 import {
   createProductDTO,
-  updateProductDTO,
+  updateProductDTO
 } from './dto';
 import { saveImageToStorage } from './helpers/image-store';
 import { ProductService } from './product.service';
@@ -24,11 +26,13 @@ export class ProductController {
     private readonly productService: ProductService,
   ) {}
 
+  @UseGuards(JwtGuard, RolesGuard)
   @Post()
   async create(@Body() dto: createProductDTO) {
     return this.productService.create(dto);
   }
 
+  @UseGuards(JwtGuard, RolesGuard)
   @Post('upload/:id')
   @UseInterceptors(
     FileInterceptor('file', saveImageToStorage),
@@ -84,6 +88,7 @@ export class ProductController {
     );
   }
 
+  @UseGuards(JwtGuard, RolesGuard)
   @Put('/:id')
   async updateProduct(
     @Param('id') id: string,
@@ -95,6 +100,7 @@ export class ProductController {
     );
   }
 
+  @UseGuards(JwtGuard, RolesGuard)
   @Delete('/:id')
   async deleteProduct(@Param('id') id: string) {
     return this.productService.deleteProduct(id);

@@ -8,6 +8,7 @@ import {
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
+import { RolesGuard } from 'src/auth/guard/role.guard';
 import { UpdateUserDTO } from './dto';
 import { UsersService } from './users.service';
 
@@ -39,6 +40,7 @@ export class UsersController {
     );
   }
 
+  @UseGuards(RolesGuard)
   @Get('all')
   async getAllUsers() {
     return await this.usersService.getAllUsers();
