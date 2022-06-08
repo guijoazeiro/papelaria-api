@@ -2,10 +2,8 @@ import {
   Body,
   Controller,
   Get,
-  Param,
-  Patch,
   Put,
-  UseGuards,
+  UseGuards
 } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator';
@@ -39,5 +37,10 @@ export class UsersController {
       id,
       updateUserDTO,
     );
+  }
+
+  @Get('all')
+  async getAllUsers() {
+    return await this.usersService.getAllUsers();
   }
 }

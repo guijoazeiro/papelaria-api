@@ -33,4 +33,13 @@ export class UsersService {
       return user;
     } catch (error) {}
   }
+
+  async getAllUsers() {
+    const users =
+      await this.prisma.user.findMany();
+    return users.map((user) => {
+      delete user.password;
+      return user;
+    });
+  }
 }
