@@ -71,6 +71,7 @@ model Order {
   quantity   Int
   amount     Int      @default(1)
   totalPrice Decimal
+  status     Status   @default(PENDING)
   createdAt  DateTime @default(now())
 
   @@map("orders")
@@ -79,4 +80,10 @@ model Order {
 enum Role {
   ADMIN
   USER
+}
+
+enum Status {
+  PENDING
+  PAID
+  CANCELLED
 }
