@@ -19,6 +19,7 @@ model User {
   role      Role     @default(USER)
   creadetAt DateTime @default(now())
 
+  Order Order[]
   @@map("users")
 }
 
@@ -57,7 +58,22 @@ model Product {
   createdAt   DateTime @default(now())
 
 
+  Order Order[]
   @@map("products")
+}
+
+model Order {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id])
+  quantity   Int
+  amount     Int      @default(1)
+  totalPrice Decimal
+  createdAt  DateTime @default(now())
+
+  @@map("orders")
 }
 
 enum Role {
