@@ -27,9 +27,7 @@ export class OrdersService {
       const productPrice = await this.getPrice(
         createOrderDTO,
       );
-
-      createOrderDTO.totalPrice =
-        productPrice * createOrderDTO.amount;
+      console.log(productPrice);
 
       const order =
         await this.prisma.order.create({
@@ -37,9 +35,18 @@ export class OrdersService {
             userId: createOrderDTO.user,
             productId: createOrderDTO.product,
             amount: createOrderDTO.amount,
-            totalPrice: createOrderDTO.totalPrice,
+            totalPrice: productPrice,
+          },
+          include: {
+            product: {
+              select: {
+                name: true,
+                price: true,
+              },
+            },
           },
         });
+
       return order;
     } catch (error) {
       throw error;
@@ -58,6 +65,7 @@ export class OrdersService {
       const orderPrice = currency(
         price.toNumber(),
       ).multiply(createOrderDTO.amount);
+
       return orderPrice.value;
     } catch (error) {
       throw error;
