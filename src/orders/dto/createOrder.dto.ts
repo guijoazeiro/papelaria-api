@@ -1,7 +1,7 @@
 import {
-    IsNotEmpty,
-    IsString,
-    IsUUID
+  IsNotEmpty,
+  IsString,
+  IsUUID
 } from 'class-validator';
 
 export class CreateOrderDTO {
