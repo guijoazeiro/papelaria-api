@@ -123,4 +123,23 @@ export class OrdersService {
       throw error;
     }
   }
+
+  async getOrdersByUser(userId: string) {
+    try {
+      return await this.prisma.order.findMany({
+        where: {
+          userId,
+        },
+        include: {
+          product: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 }
