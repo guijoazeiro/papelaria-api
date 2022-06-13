@@ -43,4 +43,9 @@ export class OrdersController {
       updateStatusDTO,
     );
   }
+
+  @Get('/:id')
+  async getOrder(@Param('id') id: string) {
+    return await this.ordersService.getOrder(id);
+  }
 }

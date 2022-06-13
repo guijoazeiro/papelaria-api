@@ -96,4 +96,31 @@ export class OrdersService {
       throw error;
     }
   }
+
+  async getOrder(id: string) {
+    try {
+      const order =
+        await this.prisma.order.findUnique({
+          where: {
+            id,
+          },
+          include: {
+            user: {
+              select: {
+                email: true,
+              },
+            },
+            product: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        });
+
+      return order;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
