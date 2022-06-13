@@ -124,11 +124,13 @@ export class OrdersService {
     }
   }
 
-  async getOrdersByUser(userId: string) {
+  async getOrdersByUser(email: string) {
     try {
       return await this.prisma.order.findMany({
         where: {
-          userId,
+          user: {
+            email: email,
+          }
         },
         include: {
           product: {

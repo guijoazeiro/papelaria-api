@@ -49,8 +49,8 @@ export class OrdersController {
     return await this.ordersService.getOrder(id);
   }
 
-  @Get('/user/:id')
-  async getOrdersByUser(@Param('id') id: string){
-    return await this.ordersService.getOrdersByUser(id)
+  @Get('/user/:email')
+  async getOrdersByUser(@Param('email') email: string){
+    return await this.ordersService.getOrdersByUser(email)
   }
 }
