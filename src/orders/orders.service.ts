@@ -14,8 +14,19 @@ export class OrdersService {
     try {
       return await this.prisma.order.findMany({
         include: {
-          user: true,
-          product: true,
+          user: {
+            select: {
+              firstname: true,
+              lastname: true,
+              email: true,
+            },
+          },
+          product: {
+            select: {
+              name: true,
+              price: true,
+            },
+          },
         },
       });
     } catch (error) {
@@ -130,7 +141,7 @@ export class OrdersService {
         where: {
           user: {
             email: email,
-          }
+          },
         },
         include: {
           product: {
