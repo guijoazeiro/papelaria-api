@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
-import { CreateOrderDTO } from './dto';
+import {
+  CreateOrderDTO,
+  UpdateStatusDto
+} from './dto';
 import currency = require('currency.js');
 
 @Injectable()
@@ -27,7 +30,6 @@ export class OrdersService {
       const productPrice = await this.getPrice(
         createOrderDTO,
       );
-      console.log(productPrice);
 
       const order =
         await this.prisma.order.create({
@@ -67,6 +69,29 @@ export class OrdersService {
       ).multiply(createOrderDTO.amount);
 
       return orderPrice.value;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async changeOrderStatus(
+    id: string,
+    updateStatusDto: UpdateStatusDto,
+  ) {
+    try {
+      const order =
+        await this.prisma.order.update({
+          where: {
+            id,
+          },
+          data: {
+            status: {
+              set: updateStatusDto.status,
+            },
+          },
+        });
+
+      return order;
     } catch (error) {
       throw error;
     }
