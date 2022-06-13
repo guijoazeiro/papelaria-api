@@ -4,8 +4,11 @@ import {
   Get,
   Param,
   Patch,
-  Post
+  Post,
+  UseGuards
 } from '@nestjs/common';
+import { JwtGuard } from 'src/auth/guard';
+import { RolesGuard } from 'src/auth/guard/role.guard';
 import {
   CreateOrderDTO,
   UpdateStatusDto
@@ -18,6 +21,7 @@ export class OrdersController {
     private readonly ordersService: OrdersService,
   ) {}
 
+  @UseGuards(JwtGuard, RolesGuard)
   @Get()
   async getOrders() {
     return await this.ordersService.getOrders();
@@ -33,6 +37,7 @@ export class OrdersController {
     );
   }
 
+  @UseGuards(JwtGuard, RolesGuard)
   @Patch('/status/:id')
   async updateStatus(
     @Param('id') id: string,
@@ -44,13 +49,19 @@ export class OrdersController {
     );
   }
 
+  @UseGuards(JwtGuard, RolesGuard)
   @Get('/:id')
   async getOrder(@Param('id') id: string) {
     return await this.ordersService.getOrder(id);
   }
 
+  @UseGuards(JwtGuard, RolesGuard)
   @Get('/user/:email')
-  async getOrdersByUser(@Param('email') email: string){
-    return await this.ordersService.getOrdersByUser(email)
+  async getOrdersByUser(
+    @Param('email') email: string,
+  ) {
+    return await this.ordersService.getOrdersByUser(
+      email,
+    );
   }
 }
