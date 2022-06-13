@@ -7,6 +7,8 @@ import {
   Post,
   UseGuards
 } from '@nestjs/common';
+import { User } from '@prisma/client';
+import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
 import { RolesGuard } from 'src/auth/guard/role.guard';
 import {
@@ -27,11 +29,14 @@ export class OrdersController {
     return await this.ordersService.getOrders();
   }
 
+  @UseGuards(JwtGuard)
   @Post()
   async createOrder(
+    @GetUser() user: User,
     @Body()
     createOrderDTO: CreateOrderDTO,
   ) {
+    createOrderDTO.user = user.id;
     return await this.ordersService.createOrder(
       createOrderDTO,
     );
