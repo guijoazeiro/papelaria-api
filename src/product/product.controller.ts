@@ -11,6 +11,13 @@ import {
   UseInterceptors
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiResponse,
+  ApiTags
+} from '@nestjs/swagger';
 import { JwtGuard } from 'src/auth/guard';
 import { RolesGuard } from 'src/auth/guard/role.guard';
 import {
@@ -20,18 +27,46 @@ import {
 import { saveImageToStorage } from './helpers/image-store';
 import { ProductService } from './product.service';
 
+@ApiTags('products')
 @Controller('product')
 export class ProductController {
   constructor(
     private readonly productService: ProductService,
   ) {}
 
+  @ApiBody({
+    type: createProductDTO,
+  })
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 201,
+    description: 'Product created successfully',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
   @UseGuards(JwtGuard, RolesGuard)
   @Post()
   async create(@Body() dto: createProductDTO) {
     return this.productService.create(dto);
   }
 
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Product image',
+    type: 'FILE',
+  })
+  @ApiResponse({
+    status: 201,
+    description:
+      'Product image updated successfully',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
+  @ApiBearerAuth()
   @UseGuards(JwtGuard, RolesGuard)
   @Post('upload/:id')
   @UseInterceptors(
@@ -47,11 +82,20 @@ export class ProductController {
     );
   }
 
+  @ApiResponse({
+    status: 201,
+    description:
+      'Products retrieved successfully',
+  })
   @Get()
   async getProducts() {
     return this.productService.getProducts();
   }
 
+  @ApiResponse({
+    status: 201,
+    description: 'Product retrieved successfully',
+  })
   @Get('/:url')
   async getProductByURL(
     @Param('url') url: string,
@@ -61,6 +105,11 @@ export class ProductController {
     );
   }
 
+  @ApiResponse({
+    status: 201,
+    description:
+      'Products retrieved successfully',
+  })
   @Get('/category/:category')
   async getProductsByCategory(
     @Param('category') category: string,
@@ -70,6 +119,11 @@ export class ProductController {
     );
   }
 
+  @ApiResponse({
+    status: 201,
+    description:
+      'Products retrieved successfully',
+  })
   @Get('/supplier/:supplier')
   async getProductsBySupplier(
     @Param('supplier') supplier: string,
@@ -79,6 +133,11 @@ export class ProductController {
     );
   }
 
+  @ApiResponse({
+    status: 201,
+    description:
+      'Products retrieved successfully',
+  })
   @Get('/search/:search')
   async getProductsBySearch(
     @Param('search') search: string,
@@ -88,6 +147,18 @@ export class ProductController {
     );
   }
 
+  @ApiBody({
+    type: updateProductDTO,
+  })
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 201,
+    description: 'Product updated successfully',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
   @UseGuards(JwtGuard, RolesGuard)
   @Put('/:id')
   async updateProduct(
@@ -100,6 +171,15 @@ export class ProductController {
     );
   }
 
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 201,
+    description: 'Product updated successfully',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
   @UseGuards(JwtGuard, RolesGuard)
   @Delete('/:id')
   async deleteProduct(@Param('id') id: string) {
