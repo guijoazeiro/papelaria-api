@@ -29,6 +29,7 @@ async function bootstrap() {
       'Eccomcerce API using Nestjs + Prisma',
     )
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(
