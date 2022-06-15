@@ -1,8 +1,8 @@
 import {
-  ForbiddenException,
-  Injectable,
+  HttpException,
+  HttpStatus,
+  Injectable
 } from '@nestjs/common';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { PrismaService } from 'src/database/prisma.service';
 import { SupplierDTO } from './dto';
 
@@ -33,13 +33,18 @@ export class SuppliersService {
 
   async getSupplier(cnpj: string) {
     try {
-      return await this.prisma.supplier.findUnique(
-        {
+      const supplier =
+        await this.prisma.supplier.findUnique({
           where: {
             cnpj: cnpj,
           },
-        },
-      );
+        });
+      if (!supplier) {
+        return new HttpException(
+          'Product not found',
+          HttpStatus.NOT_FOUND,
+        );
+      }
     } catch (error) {
       throw new Error(error);
     }

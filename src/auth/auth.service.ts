@@ -1,6 +1,7 @@
 import {
-  ForbiddenException,
-  Injectable,
+  HttpException,
+  HttpStatus,
+  Injectable
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -39,8 +40,9 @@ export class AuthService {
       });
 
     if (!user) {
-      throw new ForbiddenException(
+      return new HttpException(
         'Credentials not found',
+        HttpStatus.FORBIDDEN,
       );
     }
 
@@ -49,8 +51,9 @@ export class AuthService {
       user.password,
     );
     if (!isPasswordValid) {
-      throw new ForbiddenException(
+      return new HttpException(
         'Credentials not found',
+        HttpStatus.FORBIDDEN,
       );
     }
     return this.signToken(user.id, user.email);

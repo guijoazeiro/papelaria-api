@@ -1,8 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable
+} from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import {
   CreateOrderDTO,
-  UpdateStatusDto,
+  UpdateStatusDto
 } from './dto';
 import currency = require('currency.js');
 
@@ -129,6 +133,13 @@ export class OrdersService {
           },
         });
 
+      if (!order) {
+        return new HttpException(
+          'Order not found',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
       return order;
     } catch (error) {
       throw error;
@@ -137,20 +148,28 @@ export class OrdersService {
 
   async getOrdersByUser(email: string) {
     try {
-      return await this.prisma.order.findMany({
-        where: {
-          user: {
-            email: email,
-          },
-        },
-        include: {
-          product: {
-            select: {
-              name: true,
+      const orders =
+        await this.prisma.order.findMany({
+          where: {
+            user: {
+              email: email,
             },
           },
-        },
-      });
+          include: {
+            product: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        });
+      if (!orders) {
+        return new HttpException(
+          'Orders not found',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return orders;
     } catch (error) {
       throw error;
     }

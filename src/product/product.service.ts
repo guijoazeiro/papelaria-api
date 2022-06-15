@@ -1,8 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable
+} from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import {
   createProductDTO,
-  updateProductDTO,
+  updateProductDTO
 } from './dto';
 
 @Injectable()
@@ -77,8 +81,8 @@ export class ProductService {
 
   async getProductByURL(url: string) {
     try {
-      return await this.prisma.product.findUnique(
-        {
+      const product =
+        await this.prisma.product.findUnique({
           where: {
             url,
           },
@@ -94,8 +98,14 @@ export class ProductService {
               },
             },
           },
-        },
-      );
+        });
+      if (!product) {
+        return new HttpException(
+          'Product not found',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return product;
     } catch (error) {
       return error;
     }
@@ -103,25 +113,33 @@ export class ProductService {
 
   async getProductsByCategory(category: string) {
     try {
-      return await this.prisma.product.findMany({
-        where: {
-          category: {
-            id: category,
-          },
-        },
-        include: {
-          category: {
-            select: {
-              name: true,
+      const products =
+        await this.prisma.product.findMany({
+          where: {
+            category: {
+              id: category,
             },
           },
-          supplier: {
-            select: {
-              name: true,
+          include: {
+            category: {
+              select: {
+                name: true,
+              },
+            },
+            supplier: {
+              select: {
+                name: true,
+              },
             },
           },
-        },
-      });
+        });
+
+      if (!products) {
+        return new HttpException(
+          'Products not found',
+          HttpStatus.NOT_FOUND,
+        );
+      }
     } catch (error) {
       return error;
     }
@@ -129,25 +147,32 @@ export class ProductService {
 
   async getProductsBySupplier(supplier: string) {
     try {
-      return await this.prisma.product.findMany({
-        where: {
-          supplier: {
-            id: supplier,
-          },
-        },
-        include: {
-          category: {
-            select: {
-              name: true,
+      const products =
+        await this.prisma.product.findMany({
+          where: {
+            supplier: {
+              id: supplier,
             },
           },
-          supplier: {
-            select: {
-              name: true,
+          include: {
+            category: {
+              select: {
+                name: true,
+              },
+            },
+            supplier: {
+              select: {
+                name: true,
+              },
             },
           },
-        },
-      });
+        });
+      if (!products) {
+        return new HttpException(
+          'Products not found',
+          HttpStatus.NOT_FOUND,
+        );
+      }
     } catch (error) {
       return error;
     }
@@ -155,34 +180,42 @@ export class ProductService {
 
   async getProductsBySearch(search: string) {
     try {
-      return await this.prisma.product.findMany({
-        where: {
-          OR: [
-            {
-              name: {
-                contains: search,
+      const products =
+        await this.prisma.product.findMany({
+          where: {
+            OR: [
+              {
+                name: {
+                  contains: search,
+                },
+              },
+              {
+                description: {
+                  contains: search,
+                },
+              },
+            ],
+          },
+          include: {
+            category: {
+              select: {
+                name: true,
               },
             },
-            {
-              description: {
-                contains: search,
+            supplier: {
+              select: {
+                name: true,
               },
             },
-          ],
-        },
-        include: {
-          category: {
-            select: {
-              name: true,
-            },
           },
-          supplier: {
-            select: {
-              name: true,
-            },
-          },
-        },
-      });
+        });
+      if (!products) {
+        return new HttpException(
+          'Product not found',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return products;
     } catch (error) {
       return error;
     }
