@@ -1,7 +1,7 @@
 import {
   CanActivate,
   ExecutionContext,
-  Injectable
+  Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Role } from '@prisma/client';

@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsNotEmpty,
   IsString,
-  IsUUID
+  IsUUID,
 } from 'class-validator';
 
 export class CreateOrderDTO {

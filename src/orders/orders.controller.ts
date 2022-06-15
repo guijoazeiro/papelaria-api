@@ -5,13 +5,13 @@ import {
   Param,
   Patch,
   Post,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
   ApiResponse,
-  ApiTags
+  ApiTags,
 } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator';
@@ -19,7 +19,7 @@ import { JwtGuard } from 'src/auth/guard';
 import { RolesGuard } from 'src/auth/guard/role.guard';
 import {
   CreateOrderDTO,
-  UpdateStatusDto
+  UpdateStatusDto,
 } from './dto';
 import { OrdersService } from './orders.service';
 

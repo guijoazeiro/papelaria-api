@@ -13,7 +13,7 @@ import { RolesGuard } from './guard/role.guard';
     AuthService,
     PrismaService,
     JwtStrategy,
-    RolesGuard
+    RolesGuard,
   ],
 })
 export class AuthModule {}

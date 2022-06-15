@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsNotEmpty,
-  IsString
+  IsString,
 } from 'class-validator';
 
 export class SupplierDTO {

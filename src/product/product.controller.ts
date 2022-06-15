@@ -8,7 +8,7 @@ import {
   Put,
   UploadedFile,
   UseGuards,
-  UseInterceptors
+  UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
@@ -16,13 +16,13 @@ import {
   ApiBody,
   ApiConsumes,
   ApiResponse,
-  ApiTags
+  ApiTags,
 } from '@nestjs/swagger';
 import { JwtGuard } from 'src/auth/guard';
 import { RolesGuard } from 'src/auth/guard/role.guard';
 import {
   createProductDTO,
-  updateProductDTO
+  updateProductDTO,
 } from './dto';
 import { saveImageToStorage } from './helpers/image-store';
 import { ProductService } from './product.service';

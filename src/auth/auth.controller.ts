@@ -1,12 +1,12 @@
 import {
   Body,
   Controller,
-  Post
+  Post,
 } from '@nestjs/common';
 import {
   ApiBody,
   ApiResponse,
-  ApiTags
+  ApiTags,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { AuthDTO } from './dto';

@@ -4,7 +4,7 @@ import {
   IsInt,
   IsNotEmpty,
   IsNumber,
-  IsString
+  IsString,
 } from 'class-validator';
 
 export class updateProductDTO {
