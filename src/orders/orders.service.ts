@@ -1,12 +1,12 @@
 import {
   HttpException,
   HttpStatus,
-  Injectable
+  Injectable,
 } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import {
   CreateOrderDTO,
-  UpdateStatusDto
+  UpdateStatusDto,
 } from './dto';
 import currency = require('currency.js');
 
