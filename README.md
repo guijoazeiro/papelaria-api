@@ -2,7 +2,7 @@
 
 ## Description
 
-E-commerce made with nestjs
+E-commerce made with Nestjs, Postgres and AWS S3
 
 ## Installation
 

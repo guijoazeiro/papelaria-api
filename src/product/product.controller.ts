@@ -8,7 +8,7 @@ import {
   Put,
   UploadedFile,
   UseGuards,
-  UseInterceptors,
+  UseInterceptors
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
@@ -16,22 +16,23 @@ import {
   ApiBody,
   ApiConsumes,
   ApiResponse,
-  ApiTags,
+  ApiTags
 } from '@nestjs/swagger';
 import { JwtGuard } from 'src/auth/guard';
 import { RolesGuard } from 'src/auth/guard/role.guard';
 import {
   createProductDTO,
-  updateProductDTO,
+  updateProductDTO
 } from './dto';
-import { saveImageToStorage } from './helpers/image-store';
 import { ProductService } from './product.service';
+import { UploadFile } from './uploadFile.service';
 
 @ApiTags('products')
 @Controller('product')
 export class ProductController {
   constructor(
     private readonly productService: ProductService,
+    private readonly uploadFile: UploadFile,
   ) {}
 
   @ApiBody({
@@ -69,16 +70,19 @@ export class ProductController {
   @ApiBearerAuth()
   @UseGuards(JwtGuard, RolesGuard)
   @Post('upload/:id')
-  @UseInterceptors(
-    FileInterceptor('file', saveImageToStorage),
-  )
+  @UseInterceptors(FileInterceptor('file'))
   async uploadImage(
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
+    const path = await this.uploadFile.uploadFile(
+      file.buffer,
+      file.originalname,
+    );
+
     return this.productService.uploadImage(
       id,
-      file.path,
+      path,
     );
   }
 

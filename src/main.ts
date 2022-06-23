@@ -1,16 +1,23 @@
 import { ValidationPipe } from '@nestjs/common';
 import {
   HttpAdapterHost,
-  NestFactory,
+  NestFactory
 } from '@nestjs/core';
 import {
   DocumentBuilder,
-  SwaggerModule,
+  SwaggerModule
 } from '@nestjs/swagger';
+import { config } from 'aws-sdk';
 import { AppModule } from './app.module';
 import { PrismaClientExceptionFilter } from './prisma-client-exception.filter';
 
 async function bootstrap() {
+  config.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey:
+      process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION,
+  });
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(
     new ValidationPipe({ whitelist: true }),
@@ -23,7 +30,7 @@ async function bootstrap() {
     new PrismaClientExceptionFilter(httpAdapter),
   );
 
-  const config = new DocumentBuilder()
+  const configOpenAPI = new DocumentBuilder()
     .setTitle('Eccomerce API')
     .setDescription(
       'Eccomcerce API using Nestjs + Prisma',
@@ -34,7 +41,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(
     app,
-    config,
+    configOpenAPI,
   );
   SwaggerModule.setup('api', app, document);
 
